@@ -109,12 +109,35 @@ void output(Node *root, const char *last_output) {
     return ;
 }
 
+void outputTable(Node *root) {
+    if (root == NULL) {
+        return ;
+    }
+    printf("%c", root->key);
+    if (root->lchild == NULL && root->rchild == NULL) {
+        return ;
+    }
+    printf("(");
+    if (root->lchild) {
+        outputTable(root->lchild);
+    }
+    if (root->rchild) {
+        printf(",");
+        outputTable(root->rchild);
+    }
+    printf(")");
+    return ;
+}
+
 int main() {
     char str[100];
     Node *root = NULL;
-    while (scanf("%[^\n]", str) != EOF) {
+    while (scanf("%[^\n]s", str) != EOF) {
         getchar();
-        output(root = (build(str)), "\n");
+        root = build(str);
+        output(root, "\n");
+        outputTable(root);
+        printf("\n");
         clearTree(root);
     }
     return 0;
