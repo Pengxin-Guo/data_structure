@@ -102,5 +102,6 @@ int main() {
         }
         output(q);
     }
+    clear(q);
     return 0;
 }
