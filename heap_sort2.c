@@ -16,6 +16,7 @@
 
 void heap_sort(int *arr, int n) {
     int *p = arr - 1;                                                // p[1]代表arr[0]
+    // 线性建堆
     for (int i = n >> 1; i >= 1; i--) {
         int ind = i;
         while ((ind << 1) <= n) {
