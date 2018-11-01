@@ -42,26 +42,26 @@ Node *build_haffman(Node **arr, int n) {
     for (int i = 0; i < n - 1; i++) {
         for (int j = 0; j < n - i - 1; j++) {
             if (arr[j]->freq < arr[n - i - 1]->freq) {
-                swap_node(arr + j, arr + n - i - 1);                                   // arr[n - i - 1]存储最小的那个
+                swap_node(arr + j, arr + n - i - 1);                              // arr[n - i - 1]存储最小的那个
             }
             if (arr[j]->freq < arr[n - i  -2]->freq) {
-                swap_node(arr + j, arr + n - i - 2);                                   // arr[n - i - 2]存储次小的那个
+                swap_node(arr + j, arr + n - i - 2);                              // arr[n - i - 2]存储次小的那个
             }
         }
-        Node *temp = getNewNode(0, arr[n - i - 1]->freq + arr[n - i - 2]->freq);       // 申请一个地址空间temp,作为arr[n - i - 1]和arr[n - i - 2]的父节点
+        Node *temp = getNewNode(0, arr[n - i - 1]->freq + arr[n - i - 2]->freq);  // 申请一个地址空间,作为arr[n - i - 1]和arr[n - i - 2]的父节点,它的key是0
         temp->lchild = arr[n - i - 1];
         temp->rchild = arr[n - i - 2];
-        arr[n - i - 2] = temp;                                                         // 将这个父节点放在最后一个位置,即arr[n - i - 2]处
+        arr[n - i - 2] = temp;                                                    // 将这个父节点放在最后一个位置,即arr[n - i - 2]处
     }
     return arr[0];
 }
 
 void extract_code(Node *root, char (*code)[20], int k, char *buffer) {
     buffer[k] = 0;
-    if (root->key) {
+    if (root->key) {                                                              // 如果它的key不是0，代表是叶子节点，也就是我们待编码的节点
         strcpy(code[root->key], buffer);
         return ;
-    }
+    }                                                                             // 否则左0右1向下编码
     buffer[k] = '0';
     extract_code(root->lchild, code, k + 1, buffer);
     buffer[k] = '1';
