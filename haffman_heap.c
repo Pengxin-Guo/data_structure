@@ -38,21 +38,42 @@ int swap_node(Node **p, Node **q) {
     return 1;
 }
 
-Node *build_haffman(Node **arr, int n) {
-    Node INIT_NODE = {0, INT32_MAX, NULL, NULL};
-    for (int i = 0; i < n - 1; i++) {
-        for (int j = 0; j < n - i - 2; j++) {
-            if (arr[j]->freq < arr[n - i - 1]->freq) {
-                swap_node(arr + j, arr + n - i - 1);
-            }
-            if (arr[j]->freq < arr[n - i  -2]->freq) {
-                swap_node(arr + j, arr + n - i - 2);
-            }
+void heap_sort(Node **arr, int n) {
+    Node **p = arr - 1;                                          // p[1]代表arr[0]
+    // 线性建堆
+    for (int i = n >> 1; i >= 1; i--) {
+        int ind = i;
+        while ((ind << 1) <= n) {
+            int temp = ind;
+            if (p[temp]->freq > p[ind << 1]->freq) temp = ind << 1;
+            if ((ind << 1 | 1) <= n && p[temp]->freq > p[ind << 1 | 1]->freq) temp = ind << 1 | 1;
+            if (temp == ind) break;
+            swap_node(p + temp, p + ind);
+            ind = temp;
         }
+    }
+    // n-1次出堆(将堆首元素放到堆尾)
+    for (int i = n; i > 1; i--) {
+        swap_node(p + i, p + 1);                                        // 将堆首元素放到堆尾
+        int ind = 1;
+        while ((ind << 1) <= i - 1) {                            // 调整堆元素(不包含堆尾元素)
+            int temp = ind;                                      // 从堆顶向下调整
+            if (p[temp]->freq > p[ind << 1]->freq) temp = ind << 1;
+            if ((ind << 1 | 1) <= i - 1 && p[temp]->freq > p[ind << 1 | 1]->freq) temp = ind << 1 | 1;
+            if (temp == ind) break;
+            swap_node(p + temp, p + ind);
+            ind = temp;
+        }
+    }
+    return ;
+}
+
+Node *build_haffman(Node **arr, int n) {
+    for (int i = 0; i < n - 1; i++) {
+        heap_sort(arr, n - i);
         Node *temp = getNewNode(0, arr[n - i - 1]->freq + arr[n - i - 2]->freq);
         temp->lchild = arr[n - i - 1];
         temp->rchild = arr[n - i - 2];
-        //printf("%d*******\n", temp->freq);
         arr[n - i - 2] = temp;
     }
     return arr[0];
