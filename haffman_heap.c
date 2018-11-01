@@ -54,7 +54,7 @@ void heap_sort(Node **arr, int n) {
     }
     // n-1次出堆(将堆首元素放到堆尾)
     for (int i = n; i > 1; i--) {
-        swap_node(p + i, p + 1);                                        // 将堆首元素放到堆尾
+        swap_node(p + i, p + 1);                                 // 将堆首元素放到堆尾
         int ind = 1;
         while ((ind << 1) <= i - 1) {                            // 调整堆元素(不包含堆尾元素)
             int temp = ind;                                      // 从堆顶向下调整
@@ -68,7 +68,7 @@ void heap_sort(Node **arr, int n) {
     return ;
 }
 
-Node *build_haffman(Node **arr, int n) {
+Node *build_haffman(Node **arr, int n) {                         // 利用构建哈夫曼树
     for (int i = 0; i < n - 1; i++) {
         heap_sort(arr, n - i);
         Node *temp = getNewNode(0, arr[n - i - 1]->freq + arr[n - i - 2]->freq);
