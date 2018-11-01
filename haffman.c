@@ -39,21 +39,19 @@ int swap_node(Node **p, Node **q) {
 }
 
 Node *build_haffman(Node **arr, int n) {
-    Node INIT_NODE = {0, INT32_MAX, NULL, NULL};
     for (int i = 0; i < n - 1; i++) {
-        for (int j = 0; j < n - i - 2; j++) {
+        for (int j = 0; j < n - i - 1; j++) {
             if (arr[j]->freq < arr[n - i - 1]->freq) {
-                swap_node(arr + j, arr + n - i - 1);
+                swap_node(arr + j, arr + n - i - 1);                                   // arr[n - i - 1]存储最小的那个
             }
             if (arr[j]->freq < arr[n - i  -2]->freq) {
-                swap_node(arr + j, arr + n - i - 2);
+                swap_node(arr + j, arr + n - i - 2);                                   // arr[n - i - 2]存储次小的那个
             }
         }
-        Node *temp = getNewNode(0, arr[n - i - 1]->freq + arr[n - i - 2]->freq);
+        Node *temp = getNewNode(0, arr[n - i - 1]->freq + arr[n - i - 2]->freq);       // 申请一个地址空间temp,作为arr[n - i - 1]和arr[n - i - 2]的父节点
         temp->lchild = arr[n - i - 1];
         temp->rchild = arr[n - i - 2];
-        //printf("%d*******\n", temp->freq);
-        arr[n - i - 2] = temp;
+        arr[n - i - 2] = temp;                                                         // 将这个父节点放在最后一个位置,即arr[n - i - 2]处
     }
     return arr[0];
 }
