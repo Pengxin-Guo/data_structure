@@ -72,6 +72,7 @@ void merge_sort(int *num, int l, int r) {
 
 void randint(int *num, int n) {
     while (n--) num[n] = rand() % 100;
+    return ;
 }
 
 void output(int *num, int n) {
