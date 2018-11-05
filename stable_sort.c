@@ -47,12 +47,13 @@ void bubble_sort(int *num, int n) {
 }
 
 void merge_sort(int *num, int l, int r) {
-    if (r - l <= 1) {
+    /*if (r - l <= 1) {
         if (r - l == 1 && num[l] > num[r]) {
             swap(num[l], num[r]);
         }
         return ;
-    }
+    }*/
+    if (l == r) return ;
     int mid = (l + r) >> 1;
     merge_sort(num, l, mid);
     merge_sort(num, mid + 1, r);
