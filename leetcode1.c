@@ -128,8 +128,9 @@ int *twoSum2(int *nums, int numsSize, int target) {
 
 int main() {
     int nums[] = {2, 7, 11, 5};
+    int nums2[] = {2, 7, 11, 5};
     int *ret = twoSum(nums, 4, 9);
-    int *ret2 = twoSum2(nums, 4, 9);
+    int *ret2 = twoSum2(nums2, 4, 9);
     printf("[%d, %d]\n", ret[0], ret[1]);
     printf("[%d, %d]\n", ret2[0], ret2[1]);
     return 0;
