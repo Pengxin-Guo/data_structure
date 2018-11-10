@@ -1,2 +1,2 @@
 # data_structure
-数据结构练习代码
+data structure code
