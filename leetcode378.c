@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int find(int **matrix, int matrixRowSize, int matrixColSize, int val, int *temp) {
+int find(int **matrix, int matrixRowSize, int matrixColSize, int val, int *temp) {        // 返回val是matrix的第几个元素, 并判断其是否在矩阵matrix中
     int ans = 0, k = matrixRowSize - 1;
     for (int i = 0; i < matrixColSize; i++) {
         while (k >= 0 && matrix[k][i] > val) k--;
