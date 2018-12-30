@@ -56,7 +56,6 @@ void clear(Node *node) {
     return ;
 }
 
-
 int main() {
     Node *root = getNewNode();
     char str[100];
