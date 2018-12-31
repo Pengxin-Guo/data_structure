@@ -18,9 +18,8 @@ typedef struct Node {
 Node *getNewNode() {
     Node *p = (Node *)malloc(sizeof(Node));
     for (int i = 0; i < BASE_CNT; i++) {
-        p->next[i] = NULL;
+        p->next[i] =  NULL;
     }
-    p->flag = 0;
     return p;
 }
 
@@ -45,15 +44,6 @@ int search(Node *node, const char *str) {
         p = p->next[str[i] - BASE];
     }
     return p->flag;
-}
-
-void clear(Node *node) {
-    if (node == NULL) return ;
-    for (int i = 0; i < BASE_CNT; i++) {
-        clear(node->next[i]);
-    }
-    free(node);
-    return ;
 }
 
 int main() {
