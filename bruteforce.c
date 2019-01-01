@@ -23,7 +23,7 @@ int BruteForce(char *str, char *pattern) {
 
 int main() {
     char str[100], pattern[30];
-    while(scanf("%s%s", str, pattern) != EOF) {
+    while (scanf("%s%s", str, pattern) != EOF) {
         printf("search %s in %s = %d\n", pattern, str, BruteForce(str, pattern));
     }
     return 0;
