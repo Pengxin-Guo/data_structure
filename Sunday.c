@@ -1,5 +1,5 @@
 /*************************************************************************
-	> File Name: SUNDAY.c
+	> File Name: Sunday.c
 	> Author: gpx
 	> Mail: 1457495424@qq.com
 	> Created Time: 2019年01月01日 星期二 10时28分29秒
