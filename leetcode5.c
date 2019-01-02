@@ -20,14 +20,15 @@ int isPalindrome(char *str) {
 }
 
 char* longestPalindrome(char* s) {
-    int ret = 0, len = 0, str_len =  strlen(s);
+    int ret = 0, len = 1, str_len =  strlen(s);
+    char *str = (char *)malloc(sizeof(char) * str_len);
     for (int i = 0; i < str_len; i++) {
+        memset(str, 0, sizeof(str));
         for (int j = i + 1; j <= str_len; j++) {
-            char *str = (char *)malloc(sizeof(char) * (j - i));
+            //printf("%d\n", j - i);
+            memset(str, 0, sizeof(str));
             strncpy(str, s + i, j - i);
-            //printf("%s\n", str);
             if (!isPalindrome(str)) {
-                free(str);
                 continue;
             }
             if (j - i > len) {
@@ -40,9 +41,11 @@ char* longestPalindrome(char* s) {
     return s + ret;
 }
 
+
 int main() {
     char str[1000];
-    scanf("%s", str);
-    printf("%s\n", longestPalindrome(str));
+    while (scanf("%s", str) != EOF) {
+        printf("%s\n", longestPalindrome(str));  
+    }
     return 0;
 }
