@@ -48,6 +48,9 @@ public:
             data[i] = '0';
         }
     }
+    ~Pp() {
+        free(data);
+    }
 };
 
 int ShiftAnd(char *str, char *pattern) {
