@@ -11,12 +11,12 @@
 
 typedef struct Node {
     int flag;
-    struct  Node *next[26];
-}Node;
+    struct Node *next[26];
+} Node;
 
-typedef struct DATNode{
+typedef struct DATNode {
     int base, check;
-}DATNode;
+} DATNode;
 
 Node *getNewNode() {
     Node *p = (Node *)calloc(sizeof(Node), 1);
@@ -32,13 +32,13 @@ void clear(Node *node) {
     return ;
 }
 
-int insert(Node *node, const char *str){
+int insert(Node *node, const char *str) {
     Node *p = node;
     int cnt = 0;
     for (int i = 0; str[i]; i++) {
         if (p->next[str[i] - 'a'] == NULL) {
             p->next[str[i] - 'a'] = getNewNode();
-            cnt++;
+            cnt += 1;
         }
         p = p->next[str[i] - 'a'];
     }
@@ -63,19 +63,19 @@ int getBase(Node *node, DATNode *trie) {
 
 int Transform(Node *node, DATNode *trie, int ind) {
     if (ind == 1) trie[ind].check = 1;
-    if(node->flag) trie[ind].check = -trie[ind].check;
+    if (node->flag) trie[ind].check = -trie[ind].check;
     trie[ind].base = getBase(node, trie);
     for (int i = 0; i < 26; i++) {
-        if(node->next[i] == NULL) continue;
+        if (node->next[i] == NULL) continue;
         trie[trie[ind].base + i].check = ind;
     }
-    int ret = ind;
+    int cnt = ind;
     for (int i = 0; i < 26; i++) {
         if (node->next[i] == NULL) continue;
         int temp = Transform(node->next[i], trie, trie[ind].base + i);
-        if(temp > ret) ret = temp;
+        if (temp > cnt) cnt = temp;
     }
-    return ret;
+    return cnt;
 }
 
 int search(DATNode *trie, const char *str) {
@@ -83,7 +83,7 @@ int search(DATNode *trie, const char *str) {
     for (int i = 0; str[i]; i++) {
         int delta = str[i] - 'a';
         int check = abs(trie[trie[p].base + delta].check);
-        if(check - p) return 0;
+        if (check - p) return 0;
         p = trie[p].base + delta;
     }
     return trie[p].check < 0;
