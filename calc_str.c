@@ -51,4 +51,5 @@ int main() {
     char str[1000];
     scanf("%[^\n]s", str);
     printf("%d\n", calc(str, 0, strlen(str) - 1));
+    return 0;
 }
