@@ -9,38 +9,32 @@
 #include <stdlib.h>
 #include <string.h>
 
-int isPalindrome(char *str) {
-    int len = strlen(str), flag = 1;
-    for (int i = 0; i < len / 2 && flag; i++) {
-        if (str[i] == str[len - i - 1]) continue;
-        flag = 0;
+int expand(char *str, int i, int j, int len, int *temp) {
+    while (i >= 0 && j < len && str[i] == str[j]) {
+        i--;
+        j++;
     }
-    if (flag) return 1;
-    return 0;
+    *temp = j - i - 1;
+    return i + 1;
 }
 
 char* longestPalindrome(char* s) {
-    int ret = 0, len = 1, str_len =  strlen(s);
-    char *str = (char *)malloc(sizeof(char) * str_len);
-    for (int i = 0; i < str_len; i++) {
-        memset(str, 0, sizeof(str));
-        for (int j = i + 1; j <= str_len; j++) {
-            //printf("%d\n", j - i);
-            memset(str, 0, sizeof(str));
-            strncpy(str, s + i, j - i);
-            if (!isPalindrome(str)) {
-                continue;
-            }
-            if (j - i > len) {
-                len = j - i;
-                ret = i;
-            }
-        }
+    int len = strlen(s), temp_len = 0, ret_len = 0, temp_ind = 0, ret_ind = 0;
+    for (int i = 0; s[i]; i++) {
+        temp_ind = expand(s, i, i, len, &temp_len);
+        if (temp_len > ret_len) {
+            ret_len = temp_len;
+            ret_ind = temp_ind;
+        } 
+        temp_ind = expand(s, i, i + 1, len, &temp_len);
+        if (temp_len > ret_len) {
+            ret_len = temp_len;
+            ret_ind = temp_ind;
+        } 
     }
-    s[ret + len] = 0;
-    return s + ret;
+    s[ret_ind + ret_len] = 0;
+    return s + ret_ind;
 }
-
 
 int main() {
     char str[1000];
