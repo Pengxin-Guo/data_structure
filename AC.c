@@ -18,18 +18,14 @@ typedef struct Node {
 
 typedef struct Queue {
     Node **data;
-    int head, tail, size;
+    int head, tail;
 } Queue;
 
 Queue *init_queue(int n) {
     Queue *q = (Queue *)calloc(sizeof(Queue), 1);
-    q->data = (Node **)malloc(sizeof(Node *) * n);
+    q->data = (Node **)calloc(sizeof(Node *), n);
     q->head = q->tail = 0;
     return q;
-}
-
-Node *front(Queue *q) {
-    return q->data[q->head];
 }
 
 int empty(Queue *q) {
@@ -37,13 +33,21 @@ int empty(Queue *q) {
 }
 
 void push(Queue *q, Node *node) {
+    if (q == NULL) return ;
     q->data[q->tail++] = node;
     return ;
 }
 
+Node *front(Queue *q) {
+    if (q == NULL) return NULL;
+    return q->data[q->head];
+}
+
 void pop(Queue *q) {
+    if (q == NULL) return ;
     if (empty(q)) return ;
     q->head++;
+    return ;
 }
 
 void clear_queue(Queue *q) {
@@ -59,11 +63,14 @@ Node *getNewNode() {
 }
 
 int insert(Node *root, const char *str) {
-    Node *p = root;
     int cnt = 0;
+    Node *p = root;
     for (int i = 0; str[i]; i++) {
         int ind = str[i] - BEGIN_LETTER;
-        if (p->next[ind] == NULL) p->next[ind] = getNewNode(), cnt++;
+        if (p->next[ind] == NULL) {
+            p->next[ind] = getNewNode();
+            cnt += 1;
+        }
         p = p->next[ind];
     }
     p->flag = 1;
@@ -80,8 +87,8 @@ void clear(Node *node) {
 }
 
 void build_ac(Node *root, int n) {
-    Queue *q = init_queue(n + 10);
     root->fail = NULL;
+    Queue *q = init_queue(n + 10);
     push(q, root);
     while (!empty(q)) {
         Node *now_node = front(q);
@@ -95,6 +102,8 @@ void build_ac(Node *root, int n) {
             push(q, now_node->next[i]);
         }
     }
+    clear_queue(q);
+    return ;
 }
 
 int match(Node *root, const char *str) {
@@ -106,17 +115,20 @@ int match(Node *root, const char *str) {
         if (p == NULL) p = root;
         else p = p->next[ind];
         Node *q = p;
-        while (q) cnt += q->flag, q = q->fail;
+        while (q) {
+            cnt += q->flag;
+            q = q->fail;
+        }
     }
     return cnt;
 }
 
-int main() {
-    Node *root = getNewNode();
+int main () {
     int n, cnt = 0;
     char str[1000];
+    Node *root = getNewNode();
     scanf("%d", &n);
-    for (int i = 0; i < n; i++) {
+    while (n--) {
         scanf("%s", str);
         cnt += insert(root, str);
     }
