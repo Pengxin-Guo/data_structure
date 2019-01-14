@@ -9,8 +9,9 @@
 #include <stdlib.h>
 
 int getNum(char *str, int *ret) {
+// 将字符串转化为数字
     int i = 0, num = 0;
-    while (str[i] <= '9' && str[i] >= '0') {
+    while (str[i] >= '0' && str[i] <= '9') {
         num = num * 10 + str[i++] - '0';
     }
     *ret = num;
@@ -18,6 +19,7 @@ int getNum(char *str, int *ret) {
 }
 
 int getTerm(char *str, int *ret) {
+// 计算乘除法
     int i = 0, temp;
     char op;
     if (str[i] == 0) return 0;
@@ -28,11 +30,11 @@ int getTerm(char *str, int *ret) {
         switch (op) {
             case '*': {
                 i += getNum(str + i + 1, &temp) + 1;
-                (*ret) *= temp;
+                *ret *= temp;
             } break;
             case '/': {
                 i += getNum(str + i + 1, &temp) + 1;
-                (*ret) /= temp;
+                *ret /= temp;
             } break;
             default: return i;
         }
@@ -41,6 +43,7 @@ int getTerm(char *str, int *ret) {
 }
 
 int calc(char *str) {
+// 计算加减法
     int i = 0, a, b;
     char op;
     if (str[i] == 0) return 0;
