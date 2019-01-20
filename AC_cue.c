@@ -1,10 +1,9 @@
 /*************************************************************************
-	> File Name: AC.c
+	> File Name: AC_cue.c
 	> Author: gpx
 	> Mail: 1457495424@qq.com
-	> Created Time: 2019年01月13日 星期日 20时44分14秒
+	> Created Time: 2019年01月20日 星期日 11时11分33秒
  ************************************************************************/
-// 层次遍历建trie树的失败指针
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -88,20 +87,28 @@ void clear(Node *node) {
 }
 
 void build_ac(Node *root, int n) {
-    root->fail = NULL;
     Queue *q = init_queue(n + 10);
     push(q, root);
     while (!empty(q)) {
         Node *now_node = front(q);
         pop(q);
         for (int i = 0; i < BASE; i++) {
-            if (now_node->next[i] == NULL) continue;
-            Node *p = now_node->fail;
-            while (p && p->next[i] == NULL) p = p->fail;
-            if (p == NULL) now_node->next[i]->fail = root;
-            else now_node->next[i]->fail = p->next[i];
+            if (now_node->next[i] == NULL) {
+                if (now_node != root) now_node->next[i] = now_node->fail->next[i];
+                continue;
+            }
+            Node *p = now_node->fail ? now_node->fail->next[i] : root;
+            if (p == NULL) p = root;
+            now_node->next[i]->fail = p;
             push(q, now_node->next[i]);
         }
+        /*
+        // 下面几行代码为AC自动机的线索化, 改到97行实现了
+        for (int i = 0; i < BASE && now_node != root; i++) {
+            if (now_node->next[i]) continue;
+            now_node->next[i] = now_node->fail->next[i];
+        }
+        */
     }
     clear_queue(q);
     return ;
@@ -109,17 +116,13 @@ void build_ac(Node *root, int n) {
 
 int match(Node *root, const char *str) {
     int cnt = 0;
-    Node *p = root;
-    for (int i = 0; str[i]; i++) {
-        int ind = str[i] - BEGIN_LETTER;
-        while (p && p->next[ind] == NULL) p = p->fail;
+    Node *p = root, *q;
+    while (str[0]) {
+        p = p->next[str[0] - 'a'];
+        q = p;
+        while (q) cnt += q->flag, q = q->fail;
         if (p == NULL) p = root;
-        else p = p->next[ind];
-        Node *q = p;
-        while (q) {
-            cnt += q->flag;
-            q = q->fail;
-        }
+        str++;
     }
     return cnt;
 }
@@ -139,3 +142,4 @@ int main () {
     clear(root);
     return 0;
 }
+
