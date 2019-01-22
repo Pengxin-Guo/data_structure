@@ -62,7 +62,7 @@ int getBase(Node *node, DATNode *trie) {
 }
 
 int Transform(Node *node, DATNode *trie, int ind) {
-    if (ind == 1) trie[ind].check = 1;
+    if (ind == 1) trie[ind].check = 0;
     if (node->flag) trie[ind].check = -trie[ind].check;
     trie[ind].base = getBase(node, trie);
     for (int i = 0; i < 26; i++) {

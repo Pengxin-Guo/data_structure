@@ -65,7 +65,7 @@ int getBase(Node *node, DATNode *trie) {
 
 int Transform(Node *node, DATNode *trie, int ind) {
     if (node == NULL) return 0;
-    if (ind == 1) trie[ind].check = 1;
+    if (ind == 1) trie[ind].check = 0;
     if (node->flag) trie[ind].check = -trie[ind].check;
     trie[ind].base = getBase(node, trie);
     for (int i = 0; i < SIZE; i++) {
@@ -126,7 +126,7 @@ int match(DATNode *trie, const char *str) {
         if (p == 0) p = 1;
         else p = trie[p].base + str[0] - 'a';
         q = p;
-        while (q) cnt += (trie[q].check < 0), q = trie[q].fail;
+        while (q) cnt += (trie[q].check < 0), trie[q].check = abs(trie[q].check), q = trie[q].fail;
         str++;
     }
     return cnt;

@@ -119,6 +119,7 @@ int match(Node *root, const char *str) {
         Node *q = p;
         while (q) {
             cnt += q->flag;
+            q->flag = 0;
             q = q->fail;
         }
     }
@@ -136,7 +137,8 @@ int main () {
     }
     build_ac(root, cnt);
     scanf("%s", str);
-    printf("match word cnt : %d\n", match(root, str));
+    //printf("match word cnt : %d\n", match(root, str));
+    printf("%d\n", match(root, str));
     clear(root);
     return 0;
 }

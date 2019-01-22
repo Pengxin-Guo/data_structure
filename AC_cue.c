@@ -123,7 +123,7 @@ int match(Node *root, const char *str) {
     while (str[0]) {
         p = p->next[str[0] - 'a'];
         q = p;
-        while (q) cnt += q->flag, q = q->fail;
+        while (q) cnt += q->flag, q->flag = 0, q = q->fail;
         if (p == NULL) p = root;
         str++;
     }
