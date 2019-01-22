@@ -11,8 +11,8 @@
 
 typedef struct DATNode {
     int base, check;
-    char ch;
-}DATNode;
+    //char ch;
+} DATNode;
 
 DATNode trie[200];
 
