@@ -1,5 +1,5 @@
 /*************************************************************************
-	> File Name: AC_dp.c
+	> File Name: AC_DFS.c
 	> Author: gpx
 	> Mail: 1457495424@qq.com
 	> Created Time: 2019年01月20日 星期日 09时44分23秒
@@ -46,6 +46,7 @@ void clear(Node *node) {
     return ;
 }
 
+// 建立节点node的孩子的失败指针, 前提是node的失败指针已经建立了
 void build_ac(Node *node) {
     if (node == NULL) return ;
     if (node->fail == NULL) build_ac(node->father);
