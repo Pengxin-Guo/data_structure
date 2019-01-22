@@ -4,6 +4,7 @@
 	> Mail: 1457495424@qq.com
 	> Created Time: 2019年01月06日 星期日 15时15分22秒
  ************************************************************************/
+// 利用双数组字典树构建AC自动机
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -48,7 +49,7 @@ int insert(Node *node, const char *str) {
 }
 
 int getBase(Node *node, DATNode *trie) {
-    int base = 0, flag = 0;
+    int base = 1, flag = 0;
     while (!flag) {
         flag = 1;
         base += 1;
@@ -63,6 +64,7 @@ int getBase(Node *node, DATNode *trie) {
 }
 
 int Transform(Node *node, DATNode *trie, int ind) {
+    if (node == NULL) return 0;
     if (ind == 1) trie[ind].check = 1;
     if (node->flag) trie[ind].check = -trie[ind].check;
     trie[ind].base = getBase(node, trie);
@@ -101,28 +103,30 @@ void build_ac(DATNode *trie, int cnt) {
     queue[tail++] = 1;
     while (head < tail) {
         int now = queue[head++];
-        for (int i = 0; i <SIZE; i++) {
+        for (int i = 0; i < SIZE; i++) {
             if (!has_child(trie, now, i)) continue;
             int p = trie[now].fail;
+            //printf("%d ", p);
             while (p && !has_child(trie, p, i)) p = trie[p].fail;
             if (p == 0) p = 1;
             else p = trie[p].base + i;
             trie[trie[now].base + i].fail = p;
             queue[tail++] = trie[now].base + i;
+            //printf("%d\n", tail);
         }
     }
     return ;
 }
-
 
 int match(DATNode *trie, const char *str) {
     int cnt = 0;
     int p = 1, q;
     while (str[0]) {
         while (p && !has_child(trie, p, str[0] - 'a')) p = trie[p].fail;
+        if (p == 0) p = 1;
+        else p = trie[p].base + str[0] - 'a';
         q = p;
         while (q) cnt += (trie[q].check < 0), q = trie[q].fail;
-        if (p == 0) p = 1;
         str++;
     }
     return cnt;
@@ -139,6 +143,13 @@ int main() {
     }
     DATNode *trie = (DATNode *)calloc(sizeof(DATNode), cnt1 * 10);
     cnt2 = Transform(root, trie, 1);
+    //printf("%d %d\n", cnt1, cnt2);
+    for (int i = 0; i <= cnt2; i++) {
+        printf("%d %d %d\n", i, trie[i].base, trie[i].check);
+    }
+    build_ac(trie, cnt2 * 10);
+    scanf("%s", str);
+    printf("match word cnt : %d\n", match(trie, str));
     clear(root);
     return 0;
 }

@@ -98,8 +98,9 @@ void build_ac(Node *root, int n) {
             if (now_node->next[i] == NULL) continue;
             Node *p = now_node->fail;
             while (p && p->next[i] == NULL) p = p->fail;
-            if (p == NULL) now_node->next[i]->fail = root;
-            else now_node->next[i]->fail = p->next[i];
+            if (p == NULL) p = root;
+            else p = p->next[i];
+            now_node->next[i]->fail = p;
             push(q, now_node->next[i]);
         }
     }

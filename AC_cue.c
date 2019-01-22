@@ -4,6 +4,7 @@
 	> Mail: 1457495424@qq.com
 	> Created Time: 2019年01月20日 星期日 11时11分33秒
  ************************************************************************/
+// AC自动机的线索化
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -77,6 +78,7 @@ int insert(Node *root, const char *str) {
     return cnt;
 }
 
+/*
 void clear(Node *node) {
     if (node == NULL) return ;
     for (int i = 0; i < BASE; i++) {
@@ -85,6 +87,7 @@ void clear(Node *node) {
     free(node);
     return ;
 }
+*/
 
 void build_ac(Node *root, int n) {
     Queue *q = init_queue(n + 10);
@@ -139,7 +142,7 @@ int main () {
     build_ac(root, cnt);
     scanf("%s", str);
     printf("match word cnt : %d\n", match(root, str));
-    clear(root);
+    //clear(root);
     return 0;
 }
 
