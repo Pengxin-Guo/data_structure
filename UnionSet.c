@@ -25,24 +25,24 @@ UnionSet *init(int n) {
     return u;
 }
 
-int find(UnionSet *u, int x) {
-    return u->color[x];
-}
-
-int merge(UnionSet *u, int a, int b) {
-    int color_a = find(u, a), color_b = find(u, b);
-    if (color_a == color_b) return 0;
-    for (int i = 0; i < u->size; i++) {
-        if (u->color[i] == color_a) u->color[i] = color_b;
-    }
-    return 1;
-}
-
 void clear(UnionSet *u) {
     if (u == NULL) return ;
     free(u->color);
     free(u);
     return ;
+}
+
+int find(UnionSet *u, int x) {
+    return u->color[x];
+}
+
+int merge(UnionSet *u, int a, int b) {
+    int color_a = find(u, a), coloc_b = find(u, b);
+    if (color_a == coloc_b) return 0;
+    for (int i  =0; i < u->size; i++) {
+        if (u->color[i] == color_a) u->color[i] = coloc_b;
+    }
+    return 1;
 }
 
 void output(UnionSet *u) {
@@ -74,5 +74,6 @@ int main() {
         }
         output(u);
     }
+    clear(u);
     return 0;
 }

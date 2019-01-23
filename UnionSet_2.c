@@ -73,6 +73,7 @@ int main() {
         }
         output(u);
     }
+    clear(u);
     return 0;
 }
 

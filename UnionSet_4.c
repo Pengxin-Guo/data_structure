@@ -4,7 +4,7 @@
 	> Mail: 1457495424@qq.com
 	> Created Time: 2019年01月20日 星期日 17时10分42秒
  ************************************************************************/
-// 路径压缩的 weigthed quick_find
+// 路径压缩的 weigthed quick_union
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -81,5 +81,6 @@ int main() {
         }
         output(u);
     }
+    clear(u);
     return 0;
 }

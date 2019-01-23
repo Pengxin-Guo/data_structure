@@ -4,7 +4,7 @@
 	> Mail: 1457495424@qq.com
 	> Created Time: 2019年01月20日 星期日 17时05分22秒
  ************************************************************************/
-// weighted quick_find
+// weighted quick_union
 // 按秩优化, 把节点数量少的树加到节点数量多的树上
 
 #include <stdio.h>
@@ -81,6 +81,7 @@ int main() {
         }
         output(u);
     }
+    clear(u);
     return 0;
 }
 
