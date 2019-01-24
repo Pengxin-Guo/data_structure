@@ -42,6 +42,7 @@ Node *erase(Node *root, int key) {
         root->lchild = erase(root->lchild, key);
     } else {
         if (root->lchild == NULL && root->rchild == NULL) {
+            free(root);
             return NULL;
         } else if (root->lchild == NULL || root->rchild == NULL) {
             Node *temp = (root->lchild ? root->lchild : root->rchild);
