@@ -10,7 +10,7 @@
 
 #define min(a, b) ((a) < (b) ? (a) : (b))
 
-// findk，在有序的num1,num2数组里面找出这两个数组的第k个位置的数
+// findk，在有序的num1, num2数组里面找出这两个数组的第k个位置的数
 void findk(int *num1, int *num2, int *b1, int *b2, int e1, int e2, int k) {
     if (k <= 1) return ;
     // b1是数组num1的第一个位置, e1是数组num1的长度; b2是数组num2的第一个位置, e2是数组num2的长度
