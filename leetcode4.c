@@ -61,6 +61,32 @@ double findMedianSortedArrays(int *nums1, int nums1Size, int *nums2, int nums2Si
 }
 
 // 在num1和num2中找第k个数
+int find_kth_number(int *num1, int *num2, int n, int k) {
+    int ind1[2], ind2[2];
+    ind1[0] = 0;
+    ind2[0] = 0;
+    while (k > 1) {
+        if (ind1[0] == n || ind2[0] == n) break;
+        ind1[1] = ind1[0] + k / 2;
+        if (ind1[1] > n) ind1[1] = n;
+        ind2[1] = ind2[0] + (k - (ind1[1] - ind1[0]));
+        if (num1[ind1[1] - 1] < num2[ind2[1] - 1]) {
+            k -= (ind1[1] - ind1[0]);
+            ind1[0] = ind1[1];
+        } else {
+            k -= (ind2[1] - ind2[0]);
+            ind2[0] = ind2[1];
+        }
+    }
+    if (ind1[0] == n) {
+        return num2[ind2[0] + k - 1];
+    } else if (ind2[0] == n) {
+        return num1[ind1[0] + k - 1];
+    }
+    return num1[ind1[0]] < num2[ind2[0]] ? num1[ind1[0]] : num2[ind2[0]];
+}
+
+// 在num1和num2中找第k个数，递归版
 int __find_kth_number(int *num1, int *num2, int len1, int len2, int k) {
     if (len1 == 0) return num2[k - 1];
     if (len2 == 0) return num1[k - 1];
@@ -80,10 +106,6 @@ int __find_kth_number(int *num1, int *num2, int len1, int len2, int k) {
         k -= b1;
     }
     return __find_kth_number(num1, num2, len1, len2, k);
-}
-
-int find_kth_number(int *num1, int *num2, int n, int k) {
-    return __find_kth_number(num1, num2, n, n, k);
 }
 
 int main() {
