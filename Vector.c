@@ -7,13 +7,14 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #define DEFAULT_ARG(a, b) ((#a)[0] ? a + 0 : b)
 #define init(a) __init(DEFAULT_ARG(a, 10))
 
-typedef struct Vector{
+typedef struct Vector {
     int *data;
-    int size, length;
+    int length, size;
 } Vector;
 
 Vector *__init(int n) {
@@ -26,7 +27,7 @@ Vector *__init(int n) {
 
 int expand(Vector *v) {
     printf("[%p] expanding\n", v->data);
-    int *p = (int *)realloc(v->data, sizeof(int) * 2 * v->size);
+    int *p = (int *)realloc(v->data, sizeof(int) * v->size * 2);
     if (p == NULL) return 0;
     v->data = p;
     v->size *= 2;
@@ -50,7 +51,7 @@ int insert(Vector *v, int value, int ind) {
 }
 
 int erase(Vector *v, int ind) {
-    if (v->length == 0) return 0;
+    //if (v->length == 0) return 0;
     if (ind < 0 || ind >= v->length) return 0;
     for (int i = ind + 1; i < v->length; i++) {
         v->data[i - 1] = v->data[i];
