@@ -15,7 +15,7 @@ typedef struct LinkNode {
 } LinkNode;
 
 typedef struct LinkList {
-    LinkNode head;
+    LinkNode head;  // 虚拟头结点
     int length;
 } LinkList;
 
@@ -34,11 +34,10 @@ LinkNode *getNewNode(int value) {
 }
 
 void insert(LinkList *l, int value, int ind) {
-    if (ind < 0 || ind > l->length) return ;                 //加上这条语句，p就不会等于NULL
     LinkNode *p = &(l->head);
     while (ind--) {
         p = p->next;
-        //if (p == NULL) return ;
+        if (p == NULL) return ;
     }
     LinkNode *new_node = getNewNode(value);
     new_node->next = p->next;
@@ -48,13 +47,12 @@ void insert(LinkList *l, int value, int ind) {
 }
 
 void erase(LinkList *l, int ind) {
-    if (ind < 0 || ind >= l->length) return ;                //加上这条语句，p和p->next均不会等于NULL
     LinkNode *p = &(l->head);
     while (ind--) {
         p = p->next;
-        //if (p == NULL) return ;
+        if (p == NULL) return ;
     }
-    //if (p->next == NULL) return ;
+    if (p->next == NULL) return ;
     LinkNode *q = p->next;
     p->next = p->next->next;
     free(q);
@@ -77,7 +75,7 @@ void clear(LinkList *l) {
 void output(LinkList *l) {
     printf("[%d] ", l->length);
     LinkNode *p = l->head.next;
-    while (p != NULL) {
+    while (p) {
         printf("%d->", p->data);
         p = p->next;
     }
