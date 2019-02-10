@@ -31,17 +31,17 @@ int top(Stack *s) {
     return s->data[s->top];
 }
 
+void pop(Stack *s) {
+    if (empty(s)) return ;
+    s->top -= 1;
+    return ;
+}
+
 int push(Stack *s, int value) {
     if (s->top + 1 == s->size) return 0;
     s->top += 1;
     s->data[s->top] = value;
     return 1;
-}
-
-void pop(Stack *s) {
-    if (empty(s)) return ;
-    s->top -= 1;
-    return ;
 }
 
 void clear(Stack *s) {
@@ -68,14 +68,14 @@ int main() {
     for (int i = 0; i < MAX_OP; i++) {
         int op = rand() % 4, value = rand() % 100;
         switch (op) {
-            case 0 :
-            case 1 :
-            case 2 :
+            case 0:
+            case 1:
+            case 2:
                 push(s, value);
                 printf("push %d to Stack\n", value);
                 output(s);
                 break;
-            case 3 :
+            case 3:
                 printf("pop %d from Stack\n", top(s));
                 pop(s);
                 output(s);
