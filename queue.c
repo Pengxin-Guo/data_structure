@@ -17,10 +17,10 @@ typedef struct Queue {
 Queue *init(int n) {
     Queue *q = (Queue *)malloc(sizeof(Queue));
     q->length = n;
+    q->cnt = 0;
     q->data = (int *)malloc(sizeof(int) * n);
     q->head = 0;
     q->tail = -1;
-    q->cnt = 0;
     return q;
 }
 
@@ -28,8 +28,8 @@ int push(Queue *q, int value) {
     if (q->cnt == q->length) return 0;
     q->tail += 1;
     if (q->tail >= q->length) q->tail -= q->length;
-    q->data[q->tail] = value;
     q->cnt += 1;
+    q->data[q->tail] = value;
     return 1;
 }
 
@@ -43,7 +43,6 @@ void pop(Queue *q) {
     if (q->head >= q->length) q->head -= q->length;
     q->cnt -= 1;
     return ;
-
 }
 
 int front(Queue *q) {
@@ -52,7 +51,7 @@ int front(Queue *q) {
 }
 
 void clear(Queue *q) {
-    if (q == NULL) return;
+    if (q == NULL) return ;
     free(q->data);
     free(q);
     return ;
@@ -66,6 +65,7 @@ void output(Queue *q) {
         i + 1 == q->cnt || printf(",");
     }
     printf("]\n");
+    return ;
 }
 
 int main() {
@@ -75,18 +75,18 @@ int main() {
     for (int i = 0; i < MAX_OP; i++) {
         int op = rand() % 4, value = rand() % 100;
         switch (op) {
-            case 0 :
-            case 1 :
-            case 2 :
+            case 0:
+            case 1:
+            case 2: {
                 push(q, value);
                 printf("push %d to queue\n", value);
                 output(q);
-                break;
-            case 3 :
+            } break;
+            case 3: {
                 printf("pop %d from queue\n", front(q));
                 pop(q);
                 output(q);
-                break;
+            } break;
         }
     }
     clear(q);
