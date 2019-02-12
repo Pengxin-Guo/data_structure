@@ -93,10 +93,11 @@ Node *build(const char *str) {
                 if (empty(s)) break;
                 if (k == 0) top(s)->lchild = p;
                 else top(s)->rchild = p;
-            }
+            } break;
         }
         str++;
     }
+    clearStack(s);
     return root;
 }
 
