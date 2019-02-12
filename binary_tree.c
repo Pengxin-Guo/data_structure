@@ -17,17 +17,8 @@ typedef struct Node {
 Node *init(int data) {
     Node *p = (Node *)malloc(sizeof(Node));
     p->data = data;
-    p->lchild = NULL;
-    p->rchild = NULL;
+    p->lchild = p->rchild = NULL;
     return p;
-}
-
-void clear(Node *node) {
-    if (node == NULL) return ;
-    clear(node->lchild);
-    clear(node->rchild);
-    free(node);
-    return ;
 }
 
 Node *build() {
@@ -74,6 +65,14 @@ void postorder(Node *root) {
     return ;
 }
 
+void clear(Node *node) {
+    if (node == NULL) return ;
+    clear(node->lchild);
+    clear(node->rchild);
+    free(node);
+    return ;
+}
+
 int main() {
     Node *root = build();
     printf("height(root) = %d\n", height_tree(root));
@@ -83,5 +82,6 @@ int main() {
     printf("\n");
     postorder(root);
     printf("\n");
+    clear(root);
     return 0;
 }
