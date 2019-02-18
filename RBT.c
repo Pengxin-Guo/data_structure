@@ -13,11 +13,9 @@
 #define BLACK 1
 #define DOUBLE_BLACK 2
 
-typedef int color_t;
-
 typedef struct RBTNode {
     int key;
-    color_t color; // 0 red, 1 black, 2 double black
+    int color;
     struct RBTNode *lchild, *rchild;
 } RBTNode;
 
@@ -28,7 +26,7 @@ void init_NIL() {
     NIL = (RBTNode *)malloc(sizeof(RBTNode));
     NIL->key = -1;
     NIL->color = BLACK;
-    NIL->rchild = NIL->lchild = NIL;
+    NIL->lchild = NIL->rchild = NIL;
     return ;
 }
 
@@ -40,8 +38,8 @@ RBTNode *init(int key) {
     return p;
 }
 
-int has_red_child(RBTNode *root) {
-    return root->lchild->color == RED || root->rchild->color == RED;
+int has_red_child(RBTNode *node) {
+    return node->lchild->color == RED || node->rchild->color == RED;
 }
 
 RBTNode *left_rotate(RBTNode *node) {
@@ -66,7 +64,7 @@ RBTNode *insert_maintain(RBTNode *root) {
             root->lchild = left_rotate(root->lchild);
         }
         root = right_rotate(root);
-    }  else if (root->rchild->color == RED && has_red_child(root->rchild)) {
+    } else if (root->rchild->color == RED && has_red_child(root->rchild)) {
         if (root->rchild->lchild->color == RED) {
             root->rchild = right_rotate(root->rchild);
         }
@@ -96,8 +94,8 @@ RBTNode *insert(RBTNode *root, int key) {
     return root;
 }
 
-RBTNode *predecessor(RBTNode *root) {
-    RBTNode *temp = root->lchild;
+RBTNode *predecessor(RBTNode *node) {
+    RBTNode *temp = node->lchild;
     while (temp->rchild != NIL) temp = temp->rchild;
     return temp;
 }
@@ -116,7 +114,7 @@ RBTNode *erase_maintain(RBTNode *root) {
         if (root->rchild->color == RED) {
             root = left_rotate(root);
             root->color = BLACK;
-            root->lchild->color = RED;
+            root->lchild = RED;
             return erase_maintain(root->lchild);
         }
         root->lchild->color = BLACK;
@@ -148,7 +146,7 @@ RBTNode *erase_maintain(RBTNode *root) {
 }
 
 RBTNode *__erase(RBTNode *root, int key) {
-    if (root == NIL) return NIL;
+    if (root == NIL) return root;
     if (root->key > key) {
         root->lchild = __erase(root->lchild, key);
     } else if (root->key < key) {
