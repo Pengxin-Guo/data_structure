@@ -4,7 +4,6 @@
 	> Mail: 1457495424@qq.com
 	> Created Time: 2019年02月17日 星期日 18时07分28秒
  ************************************************************************/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -13,9 +12,11 @@
 #define BLACK 1
 #define DOUBLE_BLACK 2
 
+typedef int color_t;
+
 typedef struct RBTNode {
     int key;
-    int color;
+    color_t color; // 0 red, 1 black, 2 double black
     struct RBTNode *lchild, *rchild;
 } RBTNode;
 
@@ -26,7 +27,7 @@ void init_NIL() {
     NIL = (RBTNode *)malloc(sizeof(RBTNode));
     NIL->key = -1;
     NIL->color = BLACK;
-    NIL->lchild = NIL->rchild = NIL;
+    NIL->rchild = NIL->lchild = NIL;
     return ;
 }
 
@@ -38,8 +39,8 @@ RBTNode *init(int key) {
     return p;
 }
 
-int has_red_child(RBTNode *node) {
-    return node->lchild->color == RED || node->rchild->color == RED;
+int has_red_child(RBTNode *root) {
+    return root->lchild->color == RED || root->rchild->color == RED;
 }
 
 RBTNode *left_rotate(RBTNode *node) {
@@ -64,7 +65,7 @@ RBTNode *insert_maintain(RBTNode *root) {
             root->lchild = left_rotate(root->lchild);
         }
         root = right_rotate(root);
-    } else if (root->rchild->color == RED && has_red_child(root->rchild)) {
+    }  else if (root->rchild->color == RED && has_red_child(root->rchild)) {
         if (root->rchild->lchild->color == RED) {
             root->rchild = right_rotate(root->rchild);
         }
@@ -94,15 +95,16 @@ RBTNode *insert(RBTNode *root, int key) {
     return root;
 }
 
-RBTNode *predecessor(RBTNode *node) {
-    RBTNode *temp = node->lchild;
+RBTNode *predecessor(RBTNode *root) {
+    RBTNode *temp = root->lchild;
     while (temp->rchild != NIL) temp = temp->rchild;
     return temp;
 }
 
+
 RBTNode *erase_maintain(RBTNode *root) {
     if (root->lchild->color != DOUBLE_BLACK && root->rchild->color != DOUBLE_BLACK) return root;
-    #define UNBALANCE(a, b) (root->a->color == DOUBLE_BLACK && !has_red_child(root->b))
+    #define UNBALANCE(a, b) (root->a->color == DOUBLE_BLACK && root->b->color == BLACK && !has_red_child(root->b))
     if (UNBALANCE(lchild, rchild) || UNBALANCE(rchild, lchild)) {
         root->color += 1;
         root->lchild->color -= 1;
@@ -114,7 +116,7 @@ RBTNode *erase_maintain(RBTNode *root) {
         if (root->rchild->color == RED) {
             root = left_rotate(root);
             root->color = BLACK;
-            root->lchild = RED;
+            root->lchild->color = RED;
             return erase_maintain(root->lchild);
         }
         root->lchild->color = BLACK;
@@ -146,7 +148,7 @@ RBTNode *erase_maintain(RBTNode *root) {
 }
 
 RBTNode *__erase(RBTNode *root, int key) {
-    if (root == NIL) return root;
+    if (root == NIL) return NIL;
     if (root->key > key) {
         root->lchild = __erase(root->lchild, key);
     } else if (root->key < key) {
@@ -194,7 +196,7 @@ int main() {
     RBTNode *root = NIL;
     #define MAX_OP 20
     for (int i = 0; i < MAX_OP; i++) {
-        op = rand() % 5, val = rand() % 10;
+        op = rand() % 5, val = rand() % 100;
         switch (op) {
             case 0:
                 printf("delete val %d from RBT\n", val);
@@ -210,5 +212,6 @@ int main() {
         }
         output(root);
     }
+    clear(root);
     return 0;
 }
