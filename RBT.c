@@ -12,22 +12,20 @@
 #define BLACK 1
 #define DOUBLE_BLACK 2
 
-typedef int color_t;
-
 typedef struct RBTNode {
     int key;
-    color_t color; // 0 red, 1 black, 2 double black
+    int color;
     struct RBTNode *lchild, *rchild;
 } RBTNode;
 
 RBTNode *NIL;
 
-__attribute__((constructor))
+__attribute((constructor))
 void init_NIL() {
     NIL = (RBTNode *)malloc(sizeof(RBTNode));
     NIL->key = -1;
     NIL->color = BLACK;
-    NIL->rchild = NIL->lchild = NIL;
+    NIL->lchild = NIL->rchild = NIL;
     return ;
 }
 
@@ -35,37 +33,37 @@ RBTNode *init(int key) {
     RBTNode *p = (RBTNode *)malloc(sizeof(RBTNode));
     p->key = key;
     p->lchild = p->rchild = NIL;
-    p->color = RED;
     return p;
 }
 
-int has_red_child(RBTNode *root) {
-    return root->lchild->color == RED || root->rchild->color == RED;
+int has_red_child(RBTNode *node) {
+    return node->lchild->color == RED || node->rchild->color == RED;
 }
 
-RBTNode *left_rotate(RBTNode *node) {
-    RBTNode *temp = node->rchild;
-    node->rchild = temp->lchild;
-    temp->lchild = node;
+RBTNode *left_rotate(RBTNode *root) {
+    RBTNode *temp = root->rchild;
+    root->rchild = temp->lchild;
+    temp->lchild = root;
     return temp;
 }
 
-RBTNode *right_rotate(RBTNode *node) {
-    RBTNode *temp = node->lchild;
-    node->lchild = temp->rchild;
-    temp->rchild = node;
+RBTNode *right_rotate(RBTNode *root) {
+    RBTNode *temp = root->lchild;
+    root->lchild = temp->rchild;
+    temp->rchild = root;
     return temp;
 }
 
 RBTNode *insert_maintain(RBTNode *root) {
     if (!has_red_child(root)) return root;
     if (root->lchild->color == RED && root->rchild->color == RED) {
+        if (!has_red_child(root->lchild) && !has_red_child(root->rchild)) return root;
     } else if (root->lchild->color == RED && has_red_child(root->lchild)) {
         if (root->lchild->rchild->color == RED) {
             root->lchild = left_rotate(root->lchild);
         }
         root = right_rotate(root);
-    }  else if (root->rchild->color == RED && has_red_child(root->rchild)) {
+    } else if (root->rchild->color == RED && has_red_child(root->rchild)) {
         if (root->rchild->lchild->color == RED) {
             root->rchild = right_rotate(root->rchild);
         }
@@ -81,7 +79,7 @@ RBTNode *insert_maintain(RBTNode *root) {
 RBTNode *__insert(RBTNode *root, int key) {
     if (root == NIL) return init(key);
     if (root->key == key) return root;
-    else if (root->key > key) {
+    if (root->key > key) {
         root->lchild = __insert(root->lchild, key);
     } else {
         root->rchild = __insert(root->rchild, key);
@@ -94,13 +92,6 @@ RBTNode *insert(RBTNode *root, int key) {
     root->color = BLACK;
     return root;
 }
-
-RBTNode *predecessor(RBTNode *root) {
-    RBTNode *temp = root->lchild;
-    while (temp->rchild != NIL) temp = temp->rchild;
-    return temp;
-}
-
 
 RBTNode *erase_maintain(RBTNode *root) {
     if (root->lchild->color != DOUBLE_BLACK && root->rchild->color != DOUBLE_BLACK) return root;
@@ -117,7 +108,8 @@ RBTNode *erase_maintain(RBTNode *root) {
             root = left_rotate(root);
             root->color = BLACK;
             root->lchild->color = RED;
-            return erase_maintain(root->lchild);
+            root->lchild = erase_maintain(root->lchild);
+            return root;
         }
         root->lchild->color = BLACK;
         if (root->rchild->rchild->color != RED) {
@@ -128,11 +120,12 @@ RBTNode *erase_maintain(RBTNode *root) {
         root = left_rotate(root);
         root->color = root->lchild->color;
     } else {
-        if (root->lchild->color == RED) {
+         if (root->lchild->color == RED) {
             root = right_rotate(root);
             root->color = BLACK;
             root->rchild->color = RED;
-            return erase_maintain(root->rchild);
+            root->rchild = erase_maintain(root->rchild);
+            return root;
         }
         root->rchild->color = BLACK;
         if (root->lchild->lchild->color != RED) {
@@ -147,6 +140,12 @@ RBTNode *erase_maintain(RBTNode *root) {
     return root;
 }
 
+RBTNode *predecessor(RBTNode *root) {
+    RBTNode *temp = root->lchild;
+    while (temp->rchild != NIL) temp = temp->rchild;
+    return temp;
+}
+
 RBTNode *__erase(RBTNode *root, int key) {
     if (root == NIL) return NIL;
     if (root->key > key) {
@@ -156,7 +155,7 @@ RBTNode *__erase(RBTNode *root, int key) {
     } else {
         if (root->lchild == NIL || root->rchild == NIL) {
             RBTNode *temp = (root->lchild == NIL ? root->rchild : root->lchild);
-            temp->color += root->color;
+            temp->color += 1;
             free(root);
             return temp;
         } else {
@@ -174,11 +173,10 @@ RBTNode *erase(RBTNode *root, int key) {
     return root;
 }
 
-void clear(RBTNode *node) {
-    if (node == NIL) return ;
-    clear(node->lchild);
-    clear(node->rchild);
-    free(node);
+void clear(RBTNode *root) {
+    if (root == NIL) return ;
+    clear(root->lchild);
+    clear(root->rchild);
     return ;
 }
 
