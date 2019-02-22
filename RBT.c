@@ -189,6 +189,7 @@ void output(RBTNode *root) {
     return ;
 }
 
+/*
 int main() {
     srand(time(0));
     int op, val;
@@ -214,3 +215,4 @@ int main() {
     clear(root);
     return 0;
 }
+*/
