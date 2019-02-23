@@ -37,8 +37,8 @@ RBTNode *init(int key) {
     return p;
 }
 
-int has_red_child(RBTNode *node) {
-    return node->lchild->color == RED || node->rchild->color == RED;
+int has_red_child(RBTNode *root) {
+    return root->lchild->color == RED || root->rchild->color == RED;
 }
 
 RBTNode *left_rotate(RBTNode *root) {
@@ -100,9 +100,10 @@ RBTNode *erase_maintain(RBTNode *root) {
     if (UNBALANCE(lchild, rchild) || UNBALANCE(rchild, lchild)) {
         root->color += 1;
         root->lchild->color -= 1;
-        root->rchild->color -=1;
+        root->rchild->color -= 1;
         return root;
     }
+    #undef UNBALANCE
     if (root->lchild->color == DOUBLE_BLACK) {
         if (root->rchild->color == RED) {
             root = left_rotate(root);
@@ -120,7 +121,7 @@ RBTNode *erase_maintain(RBTNode *root) {
         root = left_rotate(root);
         root->color = root->lchild->color;
     } else {
-        if (root->lchild->color == RED) {
+         if (root->lchild->color == RED) {
             root = right_rotate(root);
             root->color = BLACK;
             root->rchild->color = RED;
@@ -188,7 +189,6 @@ void output(RBTNode *root) {
     output(root->rchild);
     return ;
 }
-
 /*
 int main() {
     srand(time(0));
