@@ -64,14 +64,14 @@ RBTNode *insert_maintain(RBTNode *root) {
             root->lchild = left_rotate(root->lchild);
         }
         root = right_rotate(root);
-    }  else if (root->rchild->color == RED && has_red_child(root->rchild)) {
+    } else if (root->rchild->color == RED && has_red_child(root->rchild)) {
         if (root->rchild->lchild->color == RED) {
             root->rchild = right_rotate(root->rchild);
         }
         root = left_rotate(root);
     } else {
         return root;
-    }
+    } 
     root->color = RED;
     root->lchild->color = root->rchild->color = BLACK;
     return root;
@@ -103,7 +103,6 @@ RBTNode *erase_maintain(RBTNode *root) {
         root->rchild->color -= 1;
         return root;
     }
-    #undef UNBALANCE
     if (root->lchild->color == DOUBLE_BLACK) {
         if (root->rchild->color == RED) {
             root = left_rotate(root);
@@ -135,7 +134,7 @@ RBTNode *erase_maintain(RBTNode *root) {
             root->lchild->lchild->color = RED;
         }
         root = right_rotate(root);
-        root->color = root->rchild->color; 
+        root->color = root->rchild->color;
     }
     root->lchild->color = root->rchild->color = BLACK;
     return root;
@@ -178,6 +177,7 @@ void clear(RBTNode *root) {
     if (root == NIL) return ;
     clear(root->lchild);
     clear(root->rchild);
+    free(root);
     return ;
 }
 
