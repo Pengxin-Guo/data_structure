@@ -71,7 +71,7 @@ RBTNode *insert_maintain(RBTNode *root) {
         root = left_rotate(root);
     } else {
         return root;
-    } 
+    }
     root->color = RED;
     root->lchild->color = root->rchild->color = BLACK;
     return root;
@@ -100,7 +100,7 @@ RBTNode *erase_maintain(RBTNode *root) {
     if (UNBALANCE(lchild, rchild) || UNBALANCE(rchild, lchild)) {
         root->color += 1;
         root->lchild->color -= 1;
-        root->rchild->color -= 1;
+        root->rchild->color -=1;
         return root;
     }
     if (root->lchild->color == DOUBLE_BLACK) {
