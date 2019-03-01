@@ -22,9 +22,9 @@ Graph *init(int n) {
     g->visited = (int *)calloc(sizeof(int), g->n + 5);
     g->dist = (int *)calloc(sizeof(int), g->n + 5);
     g->mat = (int **)calloc(sizeof(int *), g->n + 5);
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < g->n; i++) {
         g->dist[i] = INF;
-        g->mat[i] = (int *)calloc(sizeof(int ), g->n + 5);
+        g->mat[i] = (int *)calloc(sizeof(int), g->n + 5);
         for (int j = 0; j < g->n; j++) {
             g->mat[i][j] = INF;
         }
