@@ -66,6 +66,7 @@ void clear(Graph *g) {
         free(g->mat[i]);
     }
     free(g->mat);
+    free(g);
     return ;
 }
 
