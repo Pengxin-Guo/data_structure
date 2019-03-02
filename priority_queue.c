@@ -12,8 +12,8 @@
 #include <time.h>
 
 #define swap(a, b) { \
-    __typeof(a) t = a; \
-    a = b; b = t; \
+    __typeof(a) _t = a; \
+    a = b; b = _t; \
 }
 
 typedef struct priority_queue {
@@ -21,15 +21,23 @@ typedef struct priority_queue {
     int cnt, size;
 } priority_queue;
 
+priority_queue *init(int n) {
+    priority_queue *q = (priority_queue *)malloc(sizeof(priority_queue));
+    q->data = (int *)malloc(sizeof(int) * (n + 1));
+    q->cnt = 0;
+    q->size = n;
+    return q;
+}
+
 int empty(priority_queue *q) {
     return q->cnt == 0;
 }
 
 int push(priority_queue *q, int value) {
     if (q->cnt == q->size) return 0;
-    q->data[++q->cnt] = value;                               // 首先将该元素插在堆尾
+    q->data[++q->cnt] = value;
     int ind = q->cnt;
-    while (ind > 1) {                                        // 从堆尾开始向上调整堆
+    while (ind > 1) {
         if (q->data[ind] <= q->data[ind >> 1]) break;
         swap(q->data[ind], q->data[ind >> 1]);
         ind >>= 1;
@@ -39,10 +47,10 @@ int push(priority_queue *q, int value) {
 
 int pop(priority_queue *q) {
     if (empty(q)) return 0;
-    q->data[1] = q->data[q->cnt--];                          // 将堆尾元素放置堆顶，相当于堆顶元素出堆
+    q->data[1] = q->data[q->cnt--];
     int ind = 1;
-    while ((ind << 1) <= q->cnt) {                           // 从堆顶开始向下调整堆
-        int temp = ind;                                      // temp代表3个元素中最大的那个元素的位置
+    while (ind << 1 <= q->cnt) {
+        int temp = ind;
         if (q->data[temp] < q->data[ind << 1]) temp = ind << 1;
         if ((ind << 1 | 1) <= q->cnt && q->data[temp] < q->data[ind << 1 | 1]) temp = ind << 1 | 1;
         if (temp == ind) break;
@@ -55,14 +63,6 @@ int pop(priority_queue *q) {
 int top(priority_queue *q) {
     if (empty(q)) return 0;
     return q->data[1];
-}
-
-priority_queue *init(int n) {
-    priority_queue *q = (priority_queue *)malloc(sizeof(priority_queue));
-    q->data = (int *)malloc(sizeof(int) * (n + 1));          // 申请n+1个地址空间，不用0号位
-    q->cnt = 0;
-    q->size = n;
-    return q;
 }
 
 void clear(priority_queue *q) {
