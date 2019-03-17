@@ -9,7 +9,7 @@
 #include <cstring>
 using namespace std;
 
-// 在str中找pattern第一次出现的位置
+// 在字符串str中找字符串pattern第一次出现的位置
 int KMP(char *str, char *pattern) {
     int *next = (int *)calloc(sizeof(int), strlen(pattern));
     next[0] = -1;
